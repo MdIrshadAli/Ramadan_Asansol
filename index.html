@@ -1,0 +1,419 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript" src="timeTable.json"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<style>
+		p {
+		  text-align: center;
+		  font-size: 40px;
+		}
+		.div1{
+		 text-align: left;
+		 }
+		. div2{
+		 text-align: right;
+		 }
+		 table {
+			font-family: arial, sans-serif;
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		td, th {
+			border: 1px solid black;
+			text-align: left;
+			padding: 8px;
+		}
+		
+	/* 
+	.topleft {
+		position: absolute;
+		top: 320px;
+		left: 16px;
+		font-size: 18px;
+		}
+		.topright {
+		position: absolute;
+		top: 320px;
+		right: 16px;
+		font-size: 18px;
+		}
+ */
+
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}
+				
+		.row-even {
+			color: black;
+		}
+		
+		.row-odd {
+			color: white;
+		}
+		.row-selected  {
+			background-color: #333;
+			color: red;    
+		}
+		body{
+		text-align: center;
+		font-family: sans-serif;
+		font-weight: 100;
+		}
+
+		h1{
+		  color: #396;
+		  font-weight: 100;
+		  font-size: 40px;
+		  margin: 40px 0px 20px;
+		}
+
+		#clockdiv{
+			font-family: sans-serif;
+			color: #fff;
+			display: inline-block;
+			font-weight: 100;
+			text-align: center;
+			font-size: 30px;
+		}
+
+		#clockdiv > div{
+			padding: 10px;
+			border-radius: 3px;
+			background: #337DFF;
+			display: inline-block;
+		}
+
+		#clockdiv div > span{
+			padding: 15px;
+			border-radius: 3px;
+			background: #3498DB;
+			display: inline-block;
+		}
+
+		#clockdiv2{
+			font-family: sans-serif;
+			color: #fff;
+			display: inline-block;
+			font-weight: 100;
+			text-align: center;
+			font-size: 30px;
+		}
+
+		#clockdiv2 > div{
+			padding: 10px;
+			border-radius: 3px;
+			background: #337DFF;
+			display: inline-block;
+		}
+
+		#clockdiv2 div > span{
+			padding: 15px;
+			border-radius: 3px;
+			background: #3498DB;
+			display: inline-block;
+		}
+		.smalltext{
+			padding-top: 5px;
+			font-size: 16px;
+		}
+	label {
+		cursor: default;
+		
+	}
+		</style>
+</head>
+<body background="ramadan.jpg">
+	<div style="background-image: url(Welcome-Ramadan-Banner.jpg); height: 200px; width: 2000px; border: 1px solid black;background-repeat: no-repeat;"></div>
+	<div class="wrapper">
+		<div class="centre">
+		<div id="expired"><p><label>Expired</label></p></div>
+
+		<div id="clockdiv">
+			  <div>
+				<span class="hours"></span>
+				<div class="smalltext">Hours</div>
+			  </div>
+			  
+			  <div>
+				<span class="minutes"></span>
+				<div class="smalltext">Minutes</div>
+			  </div>
+			  
+			  <div>
+				<span class="seconds"></span>
+				<div class="smalltext">Seconds</div>
+			  </div>
+			  
+			  <div>
+				<span class="msec"></span>
+				<div class="smalltext">MiliSecond</div>
+			  </div>
+		</div>
+		<p><label><b>Time Reamining For Iftar :</b></label></p>
+		<div id="clockdiv2">
+
+		  <div>
+			<span class="hours"></span>
+			<div class="smalltext">Hours</div>
+		  </div>
+		  <div>
+			<span class="minutes"></span>
+			<div class="smalltext">Minutes</div>
+		  </div>
+		  <div>
+			<span class="seconds"></span>
+			<div class="smalltext">Seconds</div>
+		  </div>
+		  	<div>
+			<span class="msec"></span>
+			<div class="smalltext">MiliSecond</div>
+		  </div>
+		</div>
+		<p><label><b>Time Duraton of Today's Roza  :</b> </label></p>
+	</div>
+	<script>
+	var text = '[' +
+		 '{ "Sl_No": "1", "Date": "May 28, 2017", "Day": "Sunday", "Suhoor": "3:20", "Iftar": "18:20", "Duration": "" },' +
+		 '{ "Sl_No": "2", "Date": "May 29, 2017", "Day": "Monday", "Suhoor": "3:21", "Iftar": "18:20", "Duration": "" },' +
+		 '{ "Sl_No": "3", "Date": "May 30, 2017", "Day": "Tuesday", "Suhoor": "3:20", "Iftar": "18:20", "Duration": "" },' +
+		 '{ "Sl_No": "4", "Date": "May 31, 2017", "Day": "Wednesday", "Suhoor": "3:20", "Iftar": "18:21", "Duration": "" },' +
+		 '{ "Sl_No": "5", "Date": "June 1, 2017", "Day": "Thursday", "Suhoor": "3:20", "Iftar": "18:22", "Duration": "" },' +
+		 '{ "Sl_No": "6", "Date": "June 2, 2017", "Day": "Friday", "Suhoor": "3:20", "Iftar": "18:22", "Duration": "" },' +
+		 '{ "Sl_No": "7", "Date": "June 3, 2017", "Day": "Saturday", "Suhoor": "3:19", "Iftar": "18:22", "Duration": "" },' +
+		 '{ "Sl_No": "8", "Date": "June 4, 2017", "Day": "Sunday", "Suhoor": "3:19", "Iftar": "18:23", "Duration": "" },' +
+		 '{ "Sl_No": "9", "Date": "June 5, 2017", "Day": "Monday", "Suhoor": "3:19", "Iftar": "18:23", "Duration": "" },' +
+		 '{ "Sl_No": "10", "Date": "June 6, 2017", "Day": "Tuesday", "Suhoor": "3:19", "Iftar": "18:23", "Duration": "" },' +
+		 '{ "Sl_No": "11", "Date": "June 7, 2017", "Day": "Wednesday", "Suhoor": "3:19", "Iftar": "18:24", "Duration": "" },' +
+		 '{ "Sl_No": "12", "Date": "June 8, 2017", "Day": "Thursday", "Suhoor": "3:19", "Iftar": "18:25", "Duration": "" },' +
+		 '{ "Sl_No": "13", "Date": "June 9, 2017", "Day": "Friday", "Suhoor": "3:19", "Iftar": "18:25", "Duration": "" },' +
+		 '{ "Sl_No": "14", "Date": "June 10, 2017", "Day": "Saturday", "Suhoor": "3:18", "Iftar": "18:25", "Duration": "" },' +
+		 '{ "Sl_No": "15", "Date": "June 11, 2017", "Day": "Sunday", "Suhoor": "3:18", "Iftar": "18:25", "Duration": "" },' +
+		 '{ "Sl_No": "16", "Date": "June 12, 2017", "Day": "Monday", "Suhoor": "3:18", "Iftar": "18:26", "Duration": "" },' +
+		 '{ "Sl_No": "17", "Date": "June 13, 2017", "Day": "Tuesday", "Suhoor": "3:18", "Iftar": "18:26", "Duration": "" },'+
+		 '{ "Sl_No": "18", "Date": "June 14, 2017", "Day": "Wednesday", "Suhoor": "3:18", "Iftar": "18:27", "Duration": "" },' +
+		 '{ "Sl_No": "19", "Date": "June 15, 2017", "Day": "Thursday", "Suhoor": "3:18", "Iftar": "18:27", "Duration": "" },' +
+		 '{ "Sl_No": "20", "Date": "June 16, 2017", "Day": "Friday", "Suhoor": "3:18", "Iftar": "18:27", "Duration": "" },' +
+		 '{ "Sl_No": "21", "Date": "June 17, 2017", "Day": "Saturday", "Suhoor": "3:19", "Iftar": "18:27", "Duration": "" },' +
+		 '{ "Sl_No": "22", "Date": "June 18, 2017", "Day": "Sunday", "Suhoor": "3:19", "Iftar": "18:28", "Duration": "" },' +
+		 '{ "Sl_No": "23", "Date": "June 19, 2017", "Day": "Monday", "Suhoor": "3:19", "Iftar": "18:28", "Duration": "" },' +
+		 '{ "Sl_No": "24", "Date": "June 20, 2017", "Day": "Tuesday", "Suhoor": "3:19", "Iftar": "18:28", "Duration": "" },' +
+		 '{ "Sl_No": "25", "Date": "June 21, 2017", "Day": "Wednesday", "Suhoor": "3:19", "Iftar": "18:28", "Duration": "" },' +
+		 '{ "Sl_No": "26", "Date": "June 22, 2017", "Day": "Thursday", "Suhoor": "3:19", "Iftar": "18:29", "Duration": "" },' +
+		 '{ "Sl_No": "27", "Date": "June 23, 2017", "Day": "Friday", "Suhoor": "3:20", "Iftar": "18:29", "Duration": "" },' +
+		 '{ "Sl_No": "28", "Date": "June 24, 2017", "Day": "Saturday", "Suhoor": "3:20", "Iftar": "18:29", "Duration": "" },' +
+		 '{ "Sl_No": "29", "Date": "June 25, 2017", "Day": "Sunday", "Suhoor": "3:20", "Iftar": "18:29", "Duration": "" },'+
+		 '{ "Sl_No": "30", "Date": "June 26, 2017", "Day": "Monday", "Suhoor": "3:20", "Iftar": "18:29", "Duration": "" }]';
+
+		 data = JSON.parse(text);
+		
+		var dateObj = new Date();
+		var month = dateObj.getUTCMonth() + 1; //months from 1-12
+		var day = dateObj.getUTCDate();
+		var year = dateObj.getUTCFullYear();
+		if (month == 5){
+			month = 'May';
+		}else{
+			month = 'June';
+		}
+		var newdate = month + " " + day + ", "+ year;
+
+		function createtable() {
+			for(var i = 0; i< 30; i++){
+				 data[i].Duration = calculateDuration(data[i].Date,data[i].Suhoor,data[i].Iftar);
+	 
+				var today = new Date();
+				today.setDate(30);
+				var tomorrow = new Date();
+				tomorrow.setDate(today.getDate()+1);
+			}
+			<!--To fill the table with javascript-->
+			for (var j = 0; j < 30; j++) {
+			
+
+				if (j % 2 == 0) {
+					if(newdate == data[j].Date){
+						document.write("<tr class='row-selected'><td>" + data[j].Sl_No + " </td>");
+					}else{
+						document.write("<tr class='row-odd'><td>" + data[j].Sl_No + " </td>");
+					}
+					document.write("<td>" + data[j].Date + "</td>");
+					document.write("<td>" + data[j].Day + "</td>");
+					document.write("<td>" + data[j].Suhoor + "</td>");
+					document.write("<td>" + data[j].Iftar + "</td>");
+					document.write("<td>" + data[j].Duration + "</td></tr>");
+				} else {
+					if(newdate == data[j].Date){
+						document.write("<tr class='row-selected'><td>" + data[j].Sl_No + " </td>");
+					}else{
+						document.write("<tr  bgcolor='#aeb2bf' class='row-even'><td>" + data[j].Sl_No + " </td>");
+					}
+					document.write("<td>" + data[j].Date + "</td>");
+					document.write("<td>" + data[j].Day + "</td>");
+					document.write("<td>" + data[j].Suhoor + "</td>");
+					document.write("<td>" + data[j].Iftar + "</td>ß");
+					document.write("<td>" + data[j].Duration + "</td></tr>");
+				}
+			}
+		}
+		function calculateDuration(date,startTime,endTime){
+			var endtm = new Date( date + " "+ endTime).getTime();
+			var sttm = new Date( date + " "+ startTime).getTime();
+			var duration = endtm - sttm;
+			var totalHour = Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			var totalMinutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+			var totalSeconds = Math.floor((duration % (1000 * 60)) / 1000);
+	
+			return totalHour + ": "+ totalMinutes ;
+		}
+		for(var i = 0; i< 30; i++){
+			if(newdate == data[i].Date){
+			
+			    var tr = $(this).parent();
+					if(tr.hasClass("selected")) {
+						tr.removeClass("selected");
+					} else {
+						tr.addClass("selected");
+					}
+			
+			
+			  var clock = document.getElementById("clockdiv2");
+			  var msecSpan = clock.querySelector('.msec');
+			  var hoursSpan = clock.querySelector('.hours');
+			  var minutesSpan = clock.querySelector('.minutes');
+			  var secondsSpan = clock.querySelector('.seconds');
+
+
+// 				daysSpan.innerHTML = t.days;
+				var totalDuration = calculateDuration(data[i].Date,data[i].Suhoor,data[i].Iftar);
+				
+				var ss = totalDuration.split(":");  
+				hoursSpan.innerHTML = ss[0];
+				minutesSpan.innerHTML = ss[1] ;
+				secondsSpan.innerHTML = '00';
+				msecSpan.innerHTML = '00';
+				
+				var countEndTime = new Date(newdate + ' '+ data[i].Iftar).getTime();
+				var countStartTime = new Date(newdate + ' '+ data[i].Suhoor).getTime();
+				
+				var countEndTime2 = new Date(newdate + ' '+ data[i].Iftar);
+				
+				var x = setInterval(function() {
+
+				var now = new Date().getTime();
+				var now2 = new Date()
+				var distance = countEndTime - now;
+				var duration = countEndTime - countStartTime;
+
+				var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+				var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+				var now2 = new Date()
+				var miliSeconds = Math.floor((countEndTime2 - now2) % 1000) ; 
+
+
+			  var clock = document.getElementById("clockdiv");
+			  var msecSpan = clock.querySelector('.msec');
+			  var hoursSpan = clock.querySelector('.hours');
+			  var minutesSpan = clock.querySelector('.minutes');
+			  var secondsSpan = clock.querySelector('.seconds');
+
+			  function updateClock() {
+
+				msecSpan.innerHTML = ('0' + miliSeconds).slice(-3);
+				hoursSpan.innerHTML = ('0' + hours).slice(-2);
+				minutesSpan.innerHTML = ('0' + minutes).slice(-2);
+				secondsSpan.innerHTML = ('0' + seconds).slice(-2);
+
+
+			  }
+
+			  updateClock();
+			  document.getElementById("expired").style.visibility="hidden";
+			  document.getElementById("clockdiv").style.visibility="visible";
+				if (distance < 0) {
+					clearInterval(x);
+					document.getElementById("clockdiv").style.color = "red";
+					document.getElementById("expired").style.visibility="visible";
+			  		document.getElementById("clockdiv").style.visibility="hidden";
+				}
+				
+				
+				
+			}, 10);
+			
+
+			}
+		}
+			
+
+
+
+
+
+	</script>
+
+	
+	<div class="topleft"> 
+		<p id ="today"> </p>
+		<p id ="date"> </p>
+	</div>
+	<div class="topright">
+		<p id ="suhoor"> </p>
+		<p id ="iftar"> </p>
+	</div>
+				
+		<hr>			
+	  <p><label><b><u>Ramadan Timetable 2017 of Kolkata </u></b></label></p>              
+		<table>
+			<tr class="unselected">
+				<th>Sl No</th>
+				<th>Date</th>
+				<th>Day</th>
+				<th>Suhoor</th>
+				<th>Iftar</th>
+				<th>Duration</th>
+			</tr>
+			<script>createtable();</script>
+		</table>
+	
+	<script>
+				for(var i = 0; i< 30; i++){
+					if(newdate == data[i].Date){
+					switch (data[i].Sl_No) {
+					case "1":
+						document.getElementById("today").innerHTML =  "Today  :" +  data[i].Sl_No+"st" +  " Ramadan 1438 ";
+						break;
+					case "2":
+						document.getElementById("today").innerHTML =  "Today  :" +  data[i].Sl_No+"nd" +  " Ramadan 1438 ";
+						break;
+					case "21":
+						 document.getElementById("today").innerHTML =  "Today  :" +  data[i].Sl_No+"st" +  " Ramadan 1438 ";
+						break;
+					case "22":
+						document.getElementById("today").innerHTML =  "Today  :" +  data[i].Sl_No+"nd" +  " Ramadan 1438 ";
+						break;
+					case "3":
+						document.getElementById("today").innerHTML =  "Today  :" +  data[i].Sl_No+"rd" +  " Ramadan 1438 ";
+						break;
+					case "23":
+						document.getElementById("today").innerHTML =  "Today  :" +  data[i].Sl_No+"rd" +  " Ramadan 1438 ";
+						break;
+					default :
+						document.getElementById("today").innerHTML =  "Today  :" +  data[i].Sl_No+"th" +  " Ramadan 1438 ";
+				}
+						document.getElementById("date").innerHTML = "Date : " + data[i].Date ;
+						document.getElementById("suhoor").innerHTML =  "Suhoor Time : " +  data[i].Suhoor;
+						document.getElementById("iftar").innerHTML = "Iftar Time  :  " + data[i].Iftar;
+					}
+				}
+		
+	
+	</script>	
+	</div>		
+</body>
+</html>
+
+
