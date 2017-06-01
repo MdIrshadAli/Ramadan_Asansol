@@ -187,7 +187,8 @@
 		<b><p id ="suhoor"> </p></b>
 		<b><p id ="iftar"> </p></b>
 	</div>
-	<hr>		
+	<hr>
+	<b><u>Hadith of the Day</u></b>		
 	<div id="picleft">	
 		<p></p> 
 		<div id="hadith"></div>
@@ -195,9 +196,9 @@
 		<font size="5">For more hadith ,Please Click <a href="https://www.soundvision.com/article/the-quran-and-hadith-on-ramadan"><font color="FF0000">here</font></a></font>
 	</div>
 	<hr>	
-	
+	<b><u>Pic of the Day</u> </b>
 	<div id="hadeesRight"></div>
-	 <div class="pic-hadith" > <b> <u>Pic of the Day</u> </b><span id="tab"> <b><u>Hadith of the Day</u></b></span></div>	
+	 <div class="pic-hadith" >  </div>	
 	<hr>	
 	<script>
 	var text = '[' +
@@ -377,6 +378,8 @@
 			elem.setAttribute("alt", "Rmadan Mubarak");
 			document.getElementById("hadeesRight").appendChild(elem);
 			document.getElementById("hadith").innerHTML = hadith ;
+			document.getElementById("hadith").style.fontSize = "30px" ;
+			document.getElementById("hadith").style.color = "white" ;
 		}
 
 	</script>
