@@ -2,7 +2,10 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<script type="text/javascript" src="timeTable.json"></script>
+<!-- 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+ -->
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<style>
 		p {
@@ -130,6 +133,14 @@
 		</style>
 </head>
 <body background="ramadan.jpg" height= "100%" width="100%" link="#FFFF00" vlink="#808080" alink="#FF0000">
+  <div id="header">
+  <div class="w3-bar">
+   <form>
+	  <button formaction="index_mobile.html" class="w3-bar-item w3-button w3-red" style="width:50%" ><b>Click for Desktop version<b></button>
+	  <button formaction="https://mdirshadali.github.io/Ramadan-kolkata/" class="w3-bar-item w3-button w3-teal" style="width:50%" ><b>Click for Bhubaneshwar's TimeTable<b></button>
+	</form>
+	</div>
+  </div>
 <img src="Welcome-Ramadan-Banner.jpg" height= "200px" width="100%">
 
 	<div class="wrapper">
@@ -296,7 +307,7 @@
 		}
 		for(var i = 0; i< 30; i++){
 			if(newdate == data[i].Date){
-				displayImage(data[i].pic,data[16].hadith);
+				displayImage(data[i].pic,data[i].hadith);
 			    var tr = $(this).parent();
 					if(tr.hasClass("selected")) {
 						tr.removeClass("selected");
